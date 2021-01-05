@@ -25,13 +25,7 @@ import io.trino.testing.QueryRunner;
 import io.trino.testing.ResultWithQueryId;
 import org.intellij.lang.annotations.Language;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
-import java.util.List;
-
-import static com.google.common.collect.Iterables.getOnlyElement;
-import static io.airlift.testing.Assertions.assertGreaterThan;
-import static io.airlift.testing.Assertions.assertGreaterThanOrEqual;
 import static io.airlift.units.Duration.nanosSince;
 import static io.trino.SystemSessionProperties.ENABLE_LARGE_DYNAMIC_FILTERS;
 import static io.trino.SystemSessionProperties.JOIN_DISTRIBUTION_TYPE;
@@ -46,15 +40,18 @@ import static io.trino.sql.analyzer.FeaturesConfig.JoinDistributionType.PARTITIO
 import static io.trino.sql.analyzer.FeaturesConfig.JoinReorderingStrategy.NONE;
 import static io.trino.tpch.TpchTable.getTables;
 import static java.lang.String.format;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class TestHiveDynamicPartitionPruning
-        extends AbstractTestQueryFramework
+        extends AbstractDynamicFilteringIntegrationSmokeTest
 {
     private static final Logger log = Logger.get(TestHiveDynamicPartitionPruning.class);
     private static final String PARTITIONED_LINEITEM = "partitioned_lineitem";
     private static final long LINEITEM_COUNT = 60175;
+
+    protected boolean supportsNodeLocalDynamicFiltering()
+    {
+        return false;
+    }
 
     @Override
     protected QueryRunner createQueryRunner()

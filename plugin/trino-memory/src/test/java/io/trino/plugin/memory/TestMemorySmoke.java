@@ -46,12 +46,18 @@ import static org.testng.Assert.assertTrue;
 
 @Test(singleThreaded = true)
 public class TestMemorySmoke
-        extends AbstractTestQueryFramework
+        extends AbstractDynamicFilteringIntegrationSmokeTest
 {
     private static final int LINEITEM_COUNT = 60175;
     private static final int ORDERS_COUNT = 15000;
     private static final int PART_COUNT = 2000;
     private static final int CUSTOMER_COUNT = 1500;
+
+    @Override
+    protected boolean supportsCoordinatorDynamicFiltering()
+    {
+        return false;
+    }
 
     @Override
     protected QueryRunner createQueryRunner()
